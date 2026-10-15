@@ -7,7 +7,7 @@ const { Store } = require('./store');
 const MODULES_DIR = path.join(__dirname, '..', 'modules');
 const PARTITION = 'persist:pratika';
 const TOP_H = 84;
-const PANEL_W = 400;
+const PANEL_W = 440;
 const START_URL = 'https://www.ilportaledeltrasporto.it/';
 const PRELOAD = path.join(__dirname, 'shim-preload.js');
 
