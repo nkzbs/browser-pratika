@@ -18,7 +18,11 @@
   #bar button:disabled { opacity: .3; }
   #url { flex: 1; height: 32px; border: 0; border-radius: 16px; background: #eef0f3; padding: 0 14px; font-size: 14px; outline: none; }
   #url:focus { background: #fff; box-shadow: 0 0 0 2px #1a73e8; }
-  #panel.on { background: #1a73e822; }
+  #modules { display: flex; gap: 2px; }
+  .mod { position: relative; }
+  .mod img { width: 22px; height: 22px; vertical-align: middle; }
+  .mod.on { background: #1a73e833 !important; }
+  .mod b { position: absolute; top: 0; right: 0; min-width: 15px; height: 15px; border-radius: 8px; color: #fff; font: 700 10px/15px system-ui; padding: 0 3px; }
 </style>
 </head>
 <body>
@@ -28,7 +32,7 @@
   <button id="fwd" title="Avanti">→</button>
   <button id="reload" title="Ricarica">⟳</button>
   <input id="url" placeholder="Cerca o digita un indirizzo" spellcheck="false">
-  <button id="panel" title="Mostra/nascondi pannello IUV">▤</button>
+  <div id="modules"></div>
 </div>
 <script>
 const $ = id => document.getElementById(id);
@@ -52,12 +56,21 @@ api.onTabs(s => {
   const a = s.tabs.find(t => t.active);
   if (a && document.activeElement !== $('url')) $('url').value = a.url;
   $('back').disabled = !s.canBack; $('fwd').disabled = !s.canFwd;
-  $('panel').className = s.panelOpen ? 'on' : '';
+  const box = $('modules');
+  box.textContent = '';
+  (s.modules || []).forEach(m => {
+    const b = document.createElement('button');
+    b.className = 'mod' + (m.active ? ' on' : '');
+    b.title = m.name;
+    if (m.icon) { const i = document.createElement('img'); i.src = m.icon; b.append(i); } else b.textContent = m.name[0];
+    if (m.badge && m.badge.text) { const g = document.createElement('b'); g.textContent = m.badge.text; g.style.background = m.badge.color; b.append(g); }
+    b.onclick = () => api.send('module', m.id);
+    box.append(b);
+  });
 });
 $('back').onclick = () => api.send('back');
 $('fwd').onclick = () => api.send('forward');
 $('reload').onclick = () => api.send('reload');
-$('panel').onclick = () => api.send('toggle-panel');
 $('url').onkeydown = e => { if (e.key === 'Enter') { api.send('navigate', e.target.value); e.target.blur(); } };
 api.onFocusUrl(() => { $('url').focus(); $('url').select(); });
 api.send('ready');

@@ -1,0 +1,55 @@
+{
+  "manifest_version": 3,
+  "name": "Apri chat WhatsApp",
+  "version": "1.0.0",
+  "description": "AUTOFRANCIACORTA – scrivi un numero, salva il cliente in rubrica, scegli un messaggio predefinito e apri la chat WhatsApp.",
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Apri chat WhatsApp",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "options_page": "opzioni.html",
+  "permissions": [
+    "storage",
+    "notifications",
+    "alarms",
+    "clipboardWrite",
+    "unlimitedStorage"
+  ],
+  "host_permissions": [
+    "https://web.whatsapp.com/*"
+  ],
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Alt+W"
+      },
+      "description": "Apri il riquadro per inserire il numero"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://web.whatsapp.com/*"
+      ],
+      "js": [
+        "invio-auto.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}

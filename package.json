@@ -23,7 +23,7 @@
     },
     "files": [
       "src/**",
-      "extension/**",
+      "modules/**",
       "package.json"
     ],
     "win": {

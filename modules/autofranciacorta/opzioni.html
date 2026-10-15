@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <title>Messaggi e rubrica</title>
+  <style>
+    :root { --inchiostro:#17302B; --carta:#F6F8F7; --verde:#1FA855; --verde-scuro:#137A3D; --grigio:#66756F; --linea:#D5DDD9; --errore:#B3261E; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--carta); color: var(--inchiostro);
+      font-family: "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif; }
+    main { max-width: 720px; margin: 0 auto; padding: 32px 20px 60px; }
+    h1 { font-size: 22px; margin: 0 0 6px; }
+    .nota { color: var(--grigio); font-size: 14px; margin: 0 0 24px; line-height: 1.5; max-width: 62ch; }
+    .modello { background: #fff; border: 1px solid var(--linea); border-radius: 8px; padding: 14px; margin-bottom: 14px; }
+    .riga { display: flex; gap: 8px; margin-bottom: 8px; }
+    input, textarea { width: 100%; font: inherit; font-size: 14px; color: var(--inchiostro);
+      border: 1px solid var(--linea); border-radius: 6px; padding: 8px; }
+    input { font-weight: 600; }
+    textarea { min-height: 150px; line-height: 1.5; resize: vertical; }
+    input:focus-visible, textarea:focus-visible, button:focus-visible { outline: 2px solid var(--verde); outline-offset: 1px; }
+    button { font: inherit; font-size: 13px; border-radius: 6px; padding: 7px 12px; cursor: pointer;
+      border: 1px solid var(--linea); background: #fff; color: var(--inchiostro); white-space: nowrap; }
+    button:hover { background: #E6EEEA; }
+    .elimina { color: var(--errore); }
+    .primario { background: var(--verde); color: #fff; border-color: var(--verde); font-weight: 600; }
+    .primario:hover { background: var(--verde-scuro); }
+    .barra { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 20px; }
+    #stato { color: var(--verde-scuro); font-size: 13px; }
+    table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid var(--linea); border-radius: 8px; font-size: 14px; }
+    th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--linea); }
+    th { font-size: 12px; color: var(--grigio); font-weight: 600; }
+    td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+    td button { padding: 4px 8px; }
+    .immagine { display: flex; align-items: center; gap: 10px; margin-top: 8px; font-size: 13px; color: var(--grigio); flex-wrap: wrap; }
+    .immagine img { height: 56px; max-width: 120px; object-fit: cover; border-radius: 4px; border: 1px solid var(--linea); }
+    .immagine input[type=file] { display: none; }
+    .dato { display: block; margin-bottom: 10px; font-size: 13px; color: var(--grigio); }
+    .dato input { margin-top: 3px; font-weight: 400; }
+    .dato code { font-size: 11px; }
+    code { background: #E6EEEA; padding: 1px 4px; border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Dati dell'attività</h1>
+    <p class="nota">Questi dati vengono inseriti in automatico nei messaggi. Se lasci vuoto un campo,
+      la riga del messaggio che lo usa non viene inviata.</p>
+    <div id="dati" class="modello"></div>
+    <div class="barra" style="margin:0 0 40px">
+      <button id="salva-dati" class="primario">Salva dati</button>
+      <span id="stato-dati" role="status"></span>
+    </div>
+
+    <h1>Messaggi predefiniti</h1>
+    <p class="nota">Questi messaggi compaiono nel menu a tendina dopo aver scritto il numero.
+      Le parti tra parentesi quadre, come <code>[TARGA]</code>, vanno completate prima dell'invio:
+      l'estensione le evidenzia e non apre la chat finché restano.
+      Puoi allegare un'immagine (per esempio il biglietto da visita in JPEG) a ogni messaggio.
+      <code>{NOME}</code> e <code>{COGNOME}</code> invece vengono riempiti in automatico con i dati del cliente; se non li inserisci, al loro posto compare «Cliente».</p>
+    <div id="lista"></div>
+    <div class="barra">
+      <button id="aggiungi">Aggiungi messaggio</button>
+      <button id="salva" class="primario">Salva modifiche</button>
+      <button id="ripristina">Ripristina messaggi originali</button>
+      <span id="stato" role="status"></span>
+    </div>
+
+    <h1 style="margin-top:48px">Rubrica clienti</h1>
+    <p class="nota">I contatti sono salvati solo su questo computer, non vengono inviati da nessuna parte.
+      Esporta ogni tanto il file CSV come copia di sicurezza.</p>
+    <div class="barra" style="margin:0 0 12px">
+      <input id="cerca" placeholder="Cerca per nome, cognome o numero" style="flex:1;min-width:220px;font-weight:400">
+      <button id="esporta">Esporta CSV</button>
+    </div>
+    <div style="overflow-x:auto">
+      <table id="tabella">
+        <thead><tr><th>Cognome</th><th>Nome</th><th>Cellulare</th><th>Salvato il</th><th></th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <p id="vuota" class="nota" hidden>La rubrica è vuota: i clienti compaiono qui quando li salvi dal riquadro dell'estensione.</p>
+
+    <h1 style="margin-top:48px">Registro invii</h1>
+    <p class="nota">Gli ultimi passaggi dell'invio automatico. Se un messaggio non parte, copia queste righe e mandale a chi ti assiste.</p>
+    <div class="barra" style="margin:0 0 12px">
+      <button id="copia-registro">Copia registro</button>
+      <button id="svuota-registro">Svuota</button>
+      <span id="stato-registro" role="status"></span>
+    </div>
+    <pre id="registro" style="background:#fff;border:1px solid var(--linea);border-radius:8px;padding:12px;font-size:12px;line-height:1.6;white-space:pre-wrap;max-height:360px;overflow:auto"></pre>
+  </main>
+  <script src="modelli.js"></script>
+  <script src="opzioni.js"></script>
+</body>
+</html>

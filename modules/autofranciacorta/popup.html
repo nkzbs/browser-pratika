@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <main>
+    <h1>Apri chat WhatsApp</h1>
+    <div class="ricerca">
+      <label for="cerca" class="sr">Cerca in rubrica</label>
+      <svg aria-hidden="true" viewBox="0 0 20 20"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg>
+      <input id="cerca" type="search" autocomplete="off" placeholder="Cerca in rubrica: nome, cognome o numero">
+    </div>
+    <ul id="suggerimenti" class="elenco" hidden></ul>
+    <label for="numero" class="sr">Numero di cellulare o nome da cercare</label>
+    <div class="campo" id="campo">
+      <span class="prefisso" title="Prefisso aggiunto in automatico ai numeri italiani">+39</span>
+      <input id="numero" type="tel" inputmode="tel" autocomplete="off" placeholder="333 123 4567" autofocus>
+    </div>
+
+    <div class="nominativo">
+      <div>
+        <label for="nome" class="etichetta">Nome</label>
+        <input id="nome" class="testo-breve" autocomplete="off">
+      </div>
+      <div>
+        <label for="cognome" class="etichetta">Cognome</label>
+        <input id="cognome" class="testo-breve" autocomplete="off">
+      </div>
+    </div>
+    <p id="in-rubrica" class="in-rubrica" hidden>✓ Già in rubrica</p>
+
+    <label for="modello" class="etichetta">Messaggio</label>
+    <select id="modello"></select>
+    <p id="allegato" class="allegato" hidden><img id="miniatura" alt=""> Con immagine allegata</p>
+    <textarea id="testo" rows="8" spellcheck="true" aria-label="Testo del messaggio" hidden></textarea>
+
+    <p id="messaggio" class="messaggio">Premi Invio per aprire la chat</p>
+    <div class="azioni">
+      <button id="salva" class="secondario">Salva in rubrica</button>
+      <button id="apri" class="secondario">Apri chat</button>
+      <button id="invia" class="primario" title="Invia il messaggio senza aprire la chat">Invia subito</button>
+    </div>
+    <p id="ultimo" class="ultimo" hidden></p>
+    <p class="piede"><a href="#" id="modifica">Messaggi e rubrica</a></p>
+
+    <section id="recenti-box" hidden>
+      <h2>Recenti</h2>
+      <ul id="recenti" class="elenco"></ul>
+    </section>
+  </main>
+  <script src="modelli.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
