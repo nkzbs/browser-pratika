@@ -59,6 +59,7 @@ $('fwd').onclick = () => api.send('forward');
 $('reload').onclick = () => api.send('reload');
 $('panel').onclick = () => api.send('toggle-panel');
 $('url').onkeydown = e => { if (e.key === 'Enter') { api.send('navigate', e.target.value); e.target.blur(); } };
+api.onFocusUrl(() => { $('url').focus(); $('url').select(); });
 api.send('ready');
 </script>
 </body>

@@ -1,4 +1,4 @@
-const { app, BaseWindow, WebContentsView, ipcMain, webFrameMain, session, shell } = require('electron');
+const { app, BaseWindow, WebContentsView, ipcMain, webFrameMain, session, Menu } = require('electron');
 const fs = require('fs');
 const path = require('path');
 const { Store } = require('./store');
@@ -12,6 +12,10 @@ const PANEL_W = 400;
 const START_URL = 'https://www.ilportaledeltrasporto.it/';
 
 if (process.env.PRATIKA_NO_SANDBOX) app.commandLine.appendSwitch('no-sandbox');
+
+// una sola istanza: due app sullo stesso archivio si sovrascriverebbero i dati
+if (!app.requestSingleInstanceLock()) app.quit();
+app.on('second-instance', () => { if (win) { if (win.isMinimized()) win.restore(); win.focus(); } });
 
 // ---------- match pattern -> regex ----------
 const patRx = p => {
@@ -192,6 +196,38 @@ ipcMain.handle('chrome:scripting', async (_e, { target, files, func, args }) => 
   return out;
 });
 
+// ---------- menu e scorciatoie ----------
+function buildMenu() {
+  const wc = () => activeTab()?.view.webContents;
+  const cycle = d => { const i = tabs.findIndex(t => t.id === activeId); if (tabs.length) activate(tabs[(i + d + tabs.length) % tabs.length].id); };
+  Menu.setApplicationMenu(Menu.buildFromTemplate([
+    { label: 'Browser', submenu: [
+      { label: 'Nuova scheda', accelerator: 'CmdOrCtrl+T', click: () => addTab(START_URL) },
+      { label: 'Chiudi scheda', accelerator: 'CmdOrCtrl+W', click: () => activeId && closeTab(activeId) },
+      { label: 'Scheda successiva', accelerator: 'Ctrl+Tab', click: () => cycle(1) },
+      { label: 'Scheda precedente', accelerator: 'Ctrl+Shift+Tab', click: () => cycle(-1) },
+      { label: 'Barra indirizzi', accelerator: 'CmdOrCtrl+L', click: () => { uiView.webContents.focus(); uiView.webContents.send('focus-url'); } },
+      { label: 'Ricarica', accelerator: 'F5', click: () => wc()?.reload() },
+      { label: 'Ricarica (Ctrl+R)', accelerator: 'CmdOrCtrl+R', visible: false, click: () => wc()?.reload() },
+      { label: 'Indietro', accelerator: 'Alt+Left', click: () => wc()?.navigationHistory.goBack() },
+      { label: 'Avanti', accelerator: 'Alt+Right', click: () => wc()?.navigationHistory.goForward() },
+      { label: 'Mostra/nascondi pannello IUV', accelerator: 'CmdOrCtrl+B', click: () => { panelOpen = !panelOpen; layout(); pushTabs(); } },
+      { type: 'separator' },
+      { label: 'Esci', accelerator: 'CmdOrCtrl+Q', click: () => app.quit() }
+    ] },
+    { role: 'editMenu' },
+    { label: 'Vista', submenu: [
+      { label: 'Zoom +', accelerator: 'CmdOrCtrl+=', click: () => { const w = wc(); if (w) w.setZoomLevel(w.getZoomLevel() + 0.5); } },
+      { label: 'Zoom -', accelerator: 'CmdOrCtrl+-', click: () => { const w = wc(); if (w) w.setZoomLevel(w.getZoomLevel() - 0.5); } },
+      { label: 'Zoom 100%', accelerator: 'CmdOrCtrl+0', click: () => wc()?.setZoomLevel(0) },
+      { type: 'separator' },
+      { label: 'Strumenti sviluppatore (pagina)', accelerator: 'F12', click: () => wc()?.openDevTools({ mode: 'detach' }) },
+      { label: 'Strumenti sviluppatore (pannello IUV)', accelerator: 'CmdOrCtrl+Shift+I', click: () => panelView.webContents.openDevTools({ mode: 'detach' }) }
+    ] }
+  ]));
+  win.setMenuBarVisibility(false); // le scorciatoie restano attive, Alt mostra la barra
+}
+
 // ---------- avvio ----------
 app.whenReady().then(() => {
   store = new Store(path.join(app.getPath('userData'), 'extension-storage.json'), ch => broadcast('chrome:storage:changed', ch));
@@ -199,7 +235,16 @@ app.whenReady().then(() => {
 
   session.fromPartition(PARTITION).setPermissionRequestHandler((wc, perm, cb) => cb(['clipboard-sanitized-write', 'notifications'].includes(perm)));
 
-  win = new BaseWindow({ width: 1400, height: 900, title: 'PRATIKA Browser' });
+  const stateFile = path.join(app.getPath('userData'), 'window-state.json');
+  let state = { width: 1400, height: 900 };
+  try { state = { ...state, ...JSON.parse(fs.readFileSync(stateFile, 'utf8')) }; } catch (e) { /* primo avvio */ }
+  win = new BaseWindow({ width: state.width, height: state.height, x: state.x, y: state.y, title: 'PRATIKA Browser' });
+  if (state.maximized) win.maximize();
+  win.on('close', () => {
+    const b = win.getNormalBounds();
+    try { fs.writeFileSync(stateFile, JSON.stringify({ ...b, maximized: win.isMaximized() })); } catch (e) { /* non critico */ }
+  });
+  buildMenu();
   uiView = new WebContentsView({ webPreferences: { preload: path.join(__dirname, 'ui', 'ui-preload.js') } });
   panelView = new WebContentsView({
     webPreferences: { preload: path.join(__dirname, 'shim-preload.js'), contextIsolation: false, sandbox: false }

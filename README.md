@@ -11,6 +11,11 @@ Il funzionamento dell'estensione è descritto in [`extension/pratika-iuv/LEGGIMI
 
 > L'installer non è firmato: Windows SmartScreen può avvisare ("Maggiori informazioni" → "Esegui comunque").
 
+### Scorciatoie
+`Ctrl+T` nuova scheda · `Ctrl+W` chiudi · `Ctrl+Tab` cambia scheda · `Ctrl+L` barra indirizzi · `F5`/`Ctrl+R` ricarica ·
+`Alt+←/→` indietro/avanti · `Ctrl+B` pannello IUV · `Ctrl +/-/0` zoom · `F12` strumenti sviluppatore (pagina) ·
+`Ctrl+Shift+I` strumenti sviluppatore (pannello IUV).
+
 ## Sviluppo
 Requisiti: Node.js 22+.
 
