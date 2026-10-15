@@ -1,0 +1,11 @@
+{
+  "manifest_version": 3,
+  "name": "Scadenzario",
+  "version": "0.1.0",
+  "description": "Bollo, revisione, assicurazione e altre scadenze dei clienti, con promemoria via WhatsApp.",
+  "icons": { "16": "icons/icon16.png", "32": "icons/icon32.png", "48": "icons/icon48.png", "128": "icons/icon128.png" },
+  "action": { "default_popup": "panel.html", "default_title": "Scadenzario", "default_icon": { "16": "icons/icon16.png", "32": "icons/icon32.png" } },
+  "background": { "service_worker": "background.js" },
+  "permissions": ["alarms"],
+  "pratika_permissions": ["shared", "send:autofranciacorta"]
+}

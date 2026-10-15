@@ -6,6 +6,12 @@ Applicazione desktop (Windows): un browser a **moduli**. Ogni modulo è un'esten
 |---|---|---|
 | PRATIKA – IUV PagoPA | `modules/pratika-iuv` | Raccoglie gli IUV da Portale del Trasporto e PRA e li paga in sequenza da Sella (CBILL). Vedi [`LEGGIMI.txt`](modules/pratika-iuv/LEGGIMI.txt) |
 | Apri chat WhatsApp (AUTOFRANCIACORTA) | `modules/autofranciacorta` | Rubrica, messaggi predefiniti e invio su WhatsApp Web |
+| Fascicolo clienti e pratiche | `modules/pratika-fascicolo` | Clienti, pratiche con stato, avviso al cliente via WhatsApp |
+| Scadenzario | `modules/pratika-scadenzario` | Bollo, revisione, assicurazione; badge e promemoria WhatsApp |
+| Preventivo pratiche | `modules/pratika-preventivo` | Tariffario dello studio, preventivo, crea la pratica nel Fascicolo |
+| Registro pagamenti | `modules/pratika-registro` | Pagamenti IUV assegnati ai clienti, CSV, ricevuta via WhatsApp |
+
+Elenco completo, API di piattaforma (`chrome.pratika`) e moduli ancora da realizzare: [`docs/MODULI.md`](docs/MODULI.md).
 
 ## Uso (utenti)
 1. Scarica l'installer `.exe` dalla pagina [Releases](../../releases) (o l'artefatto dell'ultima build in *Actions*).

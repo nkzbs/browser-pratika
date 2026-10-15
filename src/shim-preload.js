@@ -86,7 +86,18 @@ function makeChrome(M) {
       setBadgeText: (d, f) => cb(inv('chrome:action:badge', { text: d.text }), f),
       setBadgeBackgroundColor: (d, f) => cb(inv('chrome:action:badge', { color: d.color }), f)
     },
-    sidePanel: { setPanelBehavior: () => Promise.resolve() }
+    sidePanel: { setPanelBehavior: () => Promise.resolve() },
+    // estensioni della piattaforma (richiedono "pratika_permissions" nel manifest)
+    pratika: {
+      shared: {
+        get: k => inv('pratika:shared:get', k),
+        set: o => inv('pratika:shared:set', o),
+        remove: k => inv('pratika:shared:remove', k)
+      },
+      onSharedChanged: ev('pratika.sharedChanged'),
+      send: (target, msg) => inv('pratika:send', target, msg),
+      read: (target, area, k) => inv('pratika:read', target, area, k)
+    }
   };
   cache[M] = api;
   return api;

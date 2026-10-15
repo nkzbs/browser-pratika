@@ -66,7 +66,11 @@ function loadModules() {
     };
   }).filter(Boolean);
 }
-const modules = loadModules();
+const ORDINE = ['pratika-iuv', 'autofranciacorta', 'pratika-fascicolo', 'pratika-scadenzario', 'pratika-preventivo', 'pratika-registro'];
+const modules = loadModules().sort((a, b) => {
+  const ia = ORDINE.indexOf(a.id), ib = ORDINE.indexOf(b.id);
+  return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib) || a.id.localeCompare(b.id);
+});
 const modOf = id => modules.find(m => m.id === id);
 const moduleForUrl = url => {
   if (url.startsWith('file:')) {
@@ -264,23 +268,39 @@ ipcMain.handle('chrome:storage:clear', (_e, M, a) => storeOf(M, a).clear());
 // messaggi tra le parti di uno stesso modulo (pannello, background, content script)
 const pending = new Map();
 let seq = 0;
-ipcMain.handle('chrome:runtime:send', (e, M, msg) => new Promise(resolve => {
-  const targets = [...set(rtTargets, M)].filter(f => f !== e.senderFrame);
-  if (!targets.length) return resolve(undefined);
-  const tab = tabs.find(t => t.view.webContents === e.sender);
-  const sender = { id: M, url: e.senderFrame ? e.senderFrame.url : '', frameId: e.senderFrame ? e.senderFrame.routingId : 0, tab: tab ? toChromeTab(tab) : undefined };
-  const reqId = ++seq;
-  const entry = { resolve, left: targets.length, timer: setTimeout(() => { if (pending.delete(reqId)) resolve(undefined); }, 60000) };
-  pending.set(reqId, entry);
-  const done = () => { if (--entry.left <= 0 && pending.delete(reqId)) { clearTimeout(entry.timer); resolve(undefined); } };
-  targets.forEach(f => { try { f.send('chrome:rt:deliver', M, reqId, msg, sender); } catch (err) { rtTargets.get(M).delete(f); done(); } });
-}));
+function deliver(targetM, e, fromM, msg) {
+  return new Promise(resolve => {
+    const targets = [...set(rtTargets, targetM)].filter(f => f !== e.senderFrame);
+    if (!targets.length) return resolve(undefined);
+    const tab = tabs.find(t => t.view.webContents === e.sender);
+    const sender = { id: fromM, url: e.senderFrame ? e.senderFrame.url : '', frameId: e.senderFrame ? e.senderFrame.routingId : 0, tab: tab ? toChromeTab(tab) : undefined };
+    const reqId = ++seq;
+    const entry = { resolve, left: targets.length, timer: setTimeout(() => { if (pending.delete(reqId)) resolve(undefined); }, 60000) };
+    pending.set(reqId, entry);
+    const done = () => { if (--entry.left <= 0 && pending.delete(reqId)) { clearTimeout(entry.timer); resolve(undefined); } };
+    targets.forEach(f => { try { f.send('chrome:rt:deliver', targetM, reqId, msg, sender); } catch (err) { rtTargets.get(targetM).delete(f); done(); } });
+  });
+}
+ipcMain.handle('chrome:runtime:send', (e, M, msg) => deliver(M, e, M, msg));
 ipcMain.on('chrome:rt:response', (_e, reqId, handled, resp) => {
   const p = pending.get(reqId);
   if (!p) return;
   if (handled) { pending.delete(reqId); clearTimeout(p.timer); p.resolve(resp); }
   else if (--p.left <= 0) { pending.delete(reqId); clearTimeout(p.timer); p.resolve(undefined); }
 });
+
+// ---------- piattaforma: dati condivisi e comunicazione tra moduli (con permessi nel manifest) ----------
+// "pratika_permissions": ["shared", "send:<modulo>", "read:<modulo>"]
+const can = (M, perm) => (modOf(M).manifest.pratika_permissions || []).includes(perm);
+const need = (M, perm) => { if (!can(M, perm)) throw new Error(`Il modulo ${M} non ha il permesso "${perm}"`); };
+let sharedStore;
+const shared = () => sharedStore || (sharedStore = new Store(path.join(app.getPath('userData'), 'storage', 'shared.json'),
+  ch => modules.forEach(m => emit(m.id, 'pratika.sharedChanged', [ch]))));
+ipcMain.handle('pratika:shared:get', (_e, M, k) => { need(M, 'shared'); return shared().get(k); });
+ipcMain.handle('pratika:shared:set', (_e, M, o) => { need(M, 'shared'); return shared().set(o); });
+ipcMain.handle('pratika:shared:remove', (_e, M, k) => { need(M, 'shared'); return shared().remove(k); });
+ipcMain.handle('pratika:send', (e, M, target, msg) => { need(M, 'send:' + target); if (!modOf(target)) throw new Error('Modulo non trovato: ' + target); return deliver(target, e, M, msg); });
+ipcMain.handle('pratika:read', (_e, M, target, area, k) => { need(M, 'read:' + target); if (!modOf(target)) throw new Error('Modulo non trovato: ' + target); return storeOf(target, area).get(k); });
 
 ipcMain.handle('chrome:runtime:options', (_e, M) => { const m = modOf(M); if (m.optionsUrl) addTab(m.optionsUrl); });
 ipcMain.handle('chrome:windows:focus', () => { win.focus(); });
@@ -432,6 +452,7 @@ app.whenReady().then(() => {
     const b = win.getNormalBounds();
     try { fs.writeFileSync(stateFile, JSON.stringify({ ...b, maximized: win.isMaximized() })); } catch (e) { /* non critico */ }
     modules.forEach(m => Object.values(m.stores).forEach(s => s.writeNow()));
+    if (sharedStore) sharedStore.writeNow();
   });
   buildMenu();
 
@@ -451,6 +472,7 @@ app.whenReady().then(() => {
   if (process.env.PRATIKA_EVAL) {
     const [id, ...code] = process.env.PRATIKA_EVAL.split('|');
     setTimeout(() => { const m = modOf(id); ensurePanel(m); m.panelView.webContents.executeJavaScript(code.join('|')).then(r => console.log('EVAL', JSON.stringify(r)), e => console.log('EVAL-ERR', e.message)); }, 4000);
+    if (process.env.PRATIKA_EVAL_UI) setTimeout(() => uiView.webContents.executeJavaScript(process.env.PRATIKA_EVAL_UI).then(r => console.log('EVALUI', JSON.stringify(r))), 7000);
   }
 });
 

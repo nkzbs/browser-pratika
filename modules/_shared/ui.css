@@ -1,0 +1,26 @@
+* { box-sizing: border-box; }
+body { margin: 0; font: 13px system-ui, sans-serif; color: #202124; background: #f6f7f9; }
+header { padding: 10px 12px; background: #fff; border-bottom: 1px solid #dadce0; display: flex; align-items: center; gap: 8px; position: sticky; top: 0; z-index: 2; }
+header h1 { font-size: 15px; margin: 0; flex: 1; }
+nav { display: flex; gap: 4px; padding: 8px 12px 0; }
+nav button { border: 0; background: #e8eaed; padding: 6px 12px; border-radius: 6px 6px 0 0; cursor: pointer; }
+nav button.on { background: #fff; font-weight: 600; }
+main { padding: 12px; }
+section.card { background: #fff; border: 1px solid #dadce0; border-radius: 8px; padding: 10px; margin-bottom: 10px; }
+label { display: block; font-size: 11px; color: #5f6368; margin: 6px 0 2px; }
+input, select, textarea { width: 100%; padding: 6px 8px; border: 1px solid #dadce0; border-radius: 6px; font: inherit; background: #fff; }
+textarea { min-height: 54px; resize: vertical; }
+.row { display: flex; gap: 6px; } .row > * { flex: 1; }
+button.b { border: 0; border-radius: 6px; padding: 6px 10px; cursor: pointer; background: #1a73e8; color: #fff; font: inherit; }
+button.b.sec { background: #e8eaed; color: #202124; }
+button.b.red { background: #d93025; }
+button.b.sm { padding: 3px 7px; font-size: 12px; }
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; padding: 5px 6px; border-bottom: 1px solid #eee; vertical-align: top; }
+th { font-size: 11px; color: #5f6368; }
+.tag { display: inline-block; padding: 1px 7px; border-radius: 10px; font-size: 11px; background: #e8eaed; }
+.tag.red { background: #fad2cf; color: #a50e0e; } .tag.amber { background: #feefc3; color: #7a4f01; } .tag.green { background: #ceead6; color: #0d652d; }
+.muted { color: #5f6368; } .empty { text-align: center; padding: 20px; color: #5f6368; }
+.msg { position: fixed; left: 12px; right: 12px; bottom: 12px; padding: 8px 12px; border-radius: 6px; background: #202124; color: #fff; display: none; }
+.msg.err { background: #d93025; }
+.actions { display: flex; gap: 4px; flex-wrap: wrap; }
