@@ -15,7 +15,7 @@ Elenco completo, API di piattaforma (`chrome.pratika`) e moduli ancora da realiz
 
 ## Uso (utenti)
 1. Scarica l'installer `.exe` dalla pagina [Releases](../../releases) (o l'artefatto dell'ultima build in *Actions*).
-2. Installa ed avvia **PRATIKA Browser**. A destra c'è il pannello IUV (pulsante ▤ per mostrarlo/nasconderlo).
+2. Installa (un clic, senza diritti di amministratore) e avvia **PRATIKA Browser**: un solo file contiene il browser e tutti i moduli. A destra c'è il pannello IUV (pulsante ▤ per mostrarlo/nasconderlo).
 3. Apri Portale/PRA in una scheda, Sella in un'altra, e segui le istruzioni del pannello.
 
 > L'installer non è firmato: Windows SmartScreen può avvisare ("Maggiori informazioni" → "Esegui comunque").
