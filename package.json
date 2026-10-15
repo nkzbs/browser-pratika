@@ -4,11 +4,47 @@
   "description": "Browser PRATIKA con estensione IUV PagoPA integrata",
   "main": "src/main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "dist": "electron-builder --win --x64",
+    "pack": "electron-builder --dir"
   },
   "license": "UNLICENSED",
   "private": true,
   "devDependencies": {
-    "electron": "^44.7.2"
+    "electron": "^44.7.2",
+    "electron-builder": "^26.15.3"
+  },
+  "author": "nkzbs",
+  "build": {
+    "appId": "it.pratika.browser",
+    "productName": "PRATIKA Browser",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**",
+      "extension/**",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
   }
 }
