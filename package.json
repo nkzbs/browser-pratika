@@ -5,7 +5,7 @@
   "main": "src/main.js",
   "scripts": {
     "start": "electron .",
-    "dist": "electron-builder --win --x64",
+    "dist": "electron-builder --win --x64 --publish never",
     "pack": "electron-builder --dir"
   },
   "license": "UNLICENSED",
