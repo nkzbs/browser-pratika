@@ -77,6 +77,29 @@ footer { border-top: 1px solid var(--line); padding-block: 26px 40px; font-size:
   .mods, .three, .state { grid-template-columns: minmax(0, 1fr); } .mod { border-right: 0 !important; border-bottom: 1px solid var(--line) !important; } .mod:last-child { border-bottom: 0 !important; }
 }
 @media (max-width: 560px) { .steps { grid-template-columns: minmax(0, 1fr); } .step { border-right: 0 !important; border-bottom: 1px solid var(--line); } .step:last-child { border-bottom: 0; } .win .side { display: none; } header nav a.hide-s { display: none; } section { padding-block: 52px; } }
+
+/* piani (test) */
+.testbar { display: inline-block; background: var(--blue-soft); color: var(--blue); font: 600 13px/1.4 var(--font-body); padding: 8px 14px; border-radius: 8px; margin: 18px 0 8px; max-width: 70ch; }
+.plans { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 26px; align-items: stretch; }
+.plan { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 24px 22px; display: flex; flex-direction: column; min-width: 0; }
+.plan.main { border: 2px solid var(--blue); }
+.plan .nm { font: 700 28px/1 var(--font-display); margin-bottom: 4px; } .plan .for { font-size: 14px; color: var(--muted); margin-bottom: 18px; min-height: 42px; }
+.plan .pr { font: 700 52px/1 var(--font-display); } .plan .pr small { font: 400 14px var(--font-body); color: var(--muted); margin-left: 6px; }
+.plan ul { padding-left: 18px; margin: 18px 0 0; font-size: 15px; } .plan li { margin-bottom: 6px; }
+.plan .badge { align-self: flex-start; font: 600 12px/1 var(--font-body); background: var(--blue); color: var(--on-blue); padding: 6px 10px; border-radius: 20px; margin-bottom: 14px; }
+.matwrap { overflow-x: auto; margin-top: 34px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+table.mat { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 15px; } table.mat th, table.mat td { padding: 14px 16px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+table.mat thead th { font: 700 20px var(--font-display); background: var(--bg); } table.mat td.c, table.mat th.c { text-align: center; white-space: nowrap; width: 110px; } table.mat tr:last-child td { border-bottom: 0; }
+table.mat .m b { display: block; font-weight: 600; } table.mat .m span { color: var(--muted); font-size: 13.5px; line-height: 1.4; display: block; margin-top: 2px; }
+.yes { color: var(--ok); font-weight: 700; } .no { color: var(--muted); opacity: .5; }
+.rules { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-top: 30px; font-size: 15px; color: var(--muted); } .rules b { display: block; color: var(--ink); margin-bottom: 4px; }
+table.mat .s { display: none; }
+@media (max-width: 600px) {
+  table.mat { min-width: 0; font-size: 14px; } table.mat th, table.mat td { padding: 12px 8px; }
+  table.mat td.c, table.mat th.c { width: 52px; padding-inline: 2px; font-size: 13px; } table.mat thead th { font-size: 15px; }
+  table.mat .f { display: none; } table.mat .s { display: inline; } table.mat .m span { font-size: 12.5px; }
+}
+@media (max-width: 940px) { .plans, .rules { grid-template-columns: minmax(0, 1fr); } .plan .for { min-height: 0; } }
 </style>
 </head>
 <body>
@@ -84,7 +107,7 @@ footer { border-top: 1px solid var(--line); padding-block: 26px 40px; font-size:
 <div class="wrap">
   <header>
     <span class="plate" style="font-size:30px" aria-label="PRATIKA"><span class="eu"><i></i>I</span><span class="no">PRATIKA</span></span>
-    <nav><a class="hide-s" href="#come">Come funziona</a><a class="hide-s" href="#moduli">Moduli</a><a class="hide-s" href="#stato">Stato</a><a class="btn sm" href="https://github.com/nkzbs/browser-pratika/releases">Scarica</a></nav>
+    <nav><a class="hide-s" href="#come">Come funziona</a><a class="hide-s" href="#moduli">Moduli</a><a class="hide-s" href="#piani">Piani</a><a class="hide-s" href="#stato">Stato</a><a class="btn sm" href="https://github.com/nkzbs/browser-pratika/releases">Scarica</a></nav>
   </header>
 
   <div class="hero">
@@ -168,6 +191,42 @@ footer { border-top: 1px solid var(--line); padding-block: 26px 40px; font-size:
     <div class="soon"><span class="l">In arrivo:</span><span class="pill">Controllo targa e visure</span><span class="pill">Compilazione guidata</span><span class="pill">Lettura documenti</span><span class="pill">Fatturazione</span><span class="pill">SEPA</span></div>
   </section>
 </div></div>
+
+
+<div class="wrap">
+  <section id="piani" style="padding-bottom:30px">
+    <div class="eyebrow">Piani</div>
+    <h2>Scegli i moduli che servono al tuo ufficio.</h2>
+    <div class="testbar">Prezzi di prova: indicativi, non ancora in vendita. Oggi il programma è in prova gratuita.</div>
+    <div class="plans">
+      <div class="plan"><div class="nm">Studio Base</div><div class="for">Per tenere in ordine clienti, pratiche e scadenze.</div>
+        <div class="pr">19 €<small>al mese + IVA</small></div>
+        <ul><li>Clienti e pratiche</li><li>Scadenze</li><li>Preventivi</li><li>WhatsApp</li><li>1 postazione</li></ul></div>
+      <div class="plan main"><span class="badge">Per chi paga molti avvisi</span><div class="nm">Studio Pagamenti</div><div class="for">Tutto il Base, più la raccolta e il pagamento degli avvisi PagoPA.</div>
+        <div class="pr">49 €<small>al mese + IVA</small></div>
+        <ul><li>Tutto lo Studio Base</li><li>Pagamenti PagoPA</li><li>Registro pagamenti</li><li>1 postazione</li></ul></div>
+      <div class="plan"><div class="nm">Studio Plus</div><div class="for">Per gli studi con più persone e più postazioni.</div>
+        <div class="pr">99 €<small>al mese + IVA</small></div>
+        <ul><li>Tutti i moduli</li><li>3 postazioni</li><li>Assistenza prioritaria</li><li>Regole di lettura aggiornate da remoto</li></ul></div>
+    </div>
+    <div class="matwrap"><table class="mat"><thead><tr><th>Cosa fa ciascun modulo</th><th class="c">Base</th><th class="c"><span class="f">Pagamenti</span><span class="s">Pagam.</span></th><th class="c">Plus</th></tr></thead><tbody>
+      <tr><td class="m"><b>Clienti e pratiche</b><span>Anagrafica con telefono e targhe, pratiche con il loro stato, avviso al cliente con un tocco.</span></td><td class="c yes">✓</td><td class="c yes">✓</td><td class="c yes">✓</td></tr>
+      <tr><td class="m"><b>Scadenze</b><span>Bollo, revisione, assicurazione e tagliando per cliente e targa, con promemoria WhatsApp.</span></td><td class="c yes">✓</td><td class="c yes">✓</td><td class="c yes">✓</td></tr>
+      <tr><td class="m"><b>Preventivi</b><span>Tariffario dello studio, totale automatico, invio al cliente e creazione della pratica.</span></td><td class="c yes">✓</td><td class="c yes">✓</td><td class="c yes">✓</td></tr>
+      <tr><td class="m"><b>WhatsApp</b><span>Rubrica e messaggi predefiniti; serve agli altri moduli per avvisare i clienti.</span></td><td class="c yes">✓</td><td class="c yes">✓</td><td class="c yes">✓</td></tr>
+      <tr><td class="m"><b>Pagamenti PagoPA</b><span>Raccolta degli avvisi da Portale e PRA e pagamento in sequenza dall'home banking, con la tua conferma.</span></td><td class="c no">–</td><td class="c yes">✓</td><td class="c yes">✓</td></tr>
+      <tr><td class="m"><b>Registro pagamenti</b><span>Chi ha pagato cosa, esportazione per il commercialista, ricevuta al cliente.</span></td><td class="c no">–</td><td class="c yes">✓</td><td class="c yes">✓</td></tr>
+      <tr><td class="m"><b>Assistenza prioritaria e regole aggiornate</b><span>Se un sito cambia aspetto, le regole di lettura si correggono senza reinstallare.</span></td><td class="c no">–</td><td class="c no">–</td><td class="c yes">✓</td></tr>
+      <tr><td class="m"><b>Postazioni incluse</b><span>Ogni postazione in più costa 15 € al mese.</span></td><td class="c">1</td><td class="c">1</td><td class="c">3</td></tr>
+    </tbody></table></div>
+    <div class="rules">
+      <div><b>Moduli aggiuntivi</b>Controllo targa e visure, compilazione guidata, lettura documenti, fatturazione e SEPA arriveranno come moduli a parte, indicativamente tra 12 e 19 € al mese ciascuno.</div>
+      <div><b>Nessun costo per pagamento</b>Il canone è fisso: puoi pagare quanti avvisi servono senza contare le operazioni. Con l'abbonamento annuale si pagano 10 mesi su 12.</div>
+      <div><b>I dati restano tuoi</b>Se la licenza scade il programma passa in sola lettura: vedi ed esporti i dati, ma non fai nuovi pagamenti.</div>
+    </div>
+    <p class="fine" style="margin-top:22px;max-width:80ch">Piani e prezzi sono una proposta in fase di verifica con i primi studi e possono cambiare. Il piano Pagamenti dipende dal via libera sull'uso dell'home banking in automatico.</p>
+  </section>
+</div>
 
 <div class="wrap">
   <section>
