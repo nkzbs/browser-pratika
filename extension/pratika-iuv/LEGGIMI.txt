@@ -1,0 +1,38 @@
+PRATIKA – IUV PagoPA  v2.2.6  (estensione Chrome)
+===============================================
+
+INSTALLAZIONE / AGGIORNAMENTO
+1. Estrai lo zip in una cartella fissa (es. C:\PRATIKA\estensioni\pratika-iuv).
+   Se avevi la versione 1, sovrascrivi la stessa cartella.
+2. Apri chrome://extensions, attiva "Modalità sviluppatore".
+3. Prima installazione: "Carica estensione non pacchettizzata" > cartella pratika-iuv.
+   Aggiornamento: premi la freccia circolare (Ricarica) sull'estensione,
+   poi ricarica (F5) le pagine di Portale, PRA e Sella già aperte.
+
+1 · RACCOLTA
+- Apri il Portale del Trasporto (Sistema pagamenti) e/o la ricerca avvisi PRA.
+- Con "Cattura automatica" attiva gli avvisi vengono salvati da soli
+  (anche cambiando pagina nei risultati). Altrimenti: "Estrai dalla pagina aperta".
+- Elenco aggregati Motorizzazione (colonna Id. Richiesta, tasti +):
+  premi "Apri tutti gli aggregati e raccogli". Per ogni aggregato DA PAGARE l'estensione
+  clicca + → Dettaglio → legge gli IUV → Torna alla ricerca → successivo.
+  (Non clicca mai "Stampa avviso" né "Paga Online".)
+- Motorizzazione: allo IUV di 17 cifre viene anteposto il 3 → codice di 18 cifre. Codice CBILL BFYKB.
+- PRA: il numero avviso di 18 cifre si usa così com'è. Codice CBILL B041S.
+  Quelli con "Pagato = SI" vengono messi direttamente tra i pagati.
+- Il badge MCTC/PRA nella tabella si può cliccare per correggere l'ente.
+
+2 · PAGAMENTO IN BANCA
+- Apri Sella > Bollettini, Mav/Rav, CBILL/PagoPA (una sola scheda Sella).
+- Nel pannello premi "Avvia pagamenti". Per ogni versamento da pagare:
+  CBILL → codice avviso → data lasciata a oggi → importo 1 → codice CBILL
+  → Conferma e procedi → controllo che il riepilogo riporti lo stesso codice
+  → Conferma e concludi → attesa esito (anche la conferma sull'app) → successivo.
+- Lascia la scheda Sella in primo piano mentre lavora.
+- "Stop" ferma il giro in qualsiasi momento.
+- Errori o esiti non riconosciuti finiscono in "Errori / da verificare"
+  con il messaggio della banca; ↺ li rimette da pagare.
+
+SE QUALCOSA NON VA
+Impostazioni > "Diagnostica pagina" copia la struttura della pagina aperta
+(campi, pulsanti, intestazioni: nessun dato dei clienti). Incollala a Claude.

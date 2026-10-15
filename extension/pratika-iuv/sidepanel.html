@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>IUV PagoPA</title>
+<link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+<header>
+  <div class="brand"><img src="icons/icon32.png" alt=""><div><b>IUV PagoPA</b><small>PRATIKA · Motorizzazione + PRA → Sella</small></div></div>
+</header>
+
+<section class="actions">
+  <div class="step">1 · Raccolta</div>
+  <button id="btnScan" class="primary">Estrai dalla pagina aperta</button>
+  <div class="bank-row" style="margin-top:8px">
+    <button id="btnHarvest">⊕ Apri tutti gli aggregati e raccogli</button>
+    <button id="btnHarvestStop" class="danger" hidden>■ Stop</button>
+  </div>
+  <div id="harvestStatus" class="run-status" hidden></div>
+  <details id="harvestLogBox" hidden><summary>Registro raccolta</summary><pre id="harvestLog"></pre><button id="btnCopyHLog">Copia registro</button></details>
+  <label class="switch"><input type="checkbox" id="chkAuto" checked> Cattura automatica (Portale del Trasporto e PRA)</label>
+  <div id="msg" class="msg" hidden></div>
+</section>
+
+<section class="bank">
+  <div class="step">2 · Pagamento in banca (Sella, CBILL)</div>
+  <div class="bank-row">
+    <button id="btnStart" class="ok">▶ Avvia pagamenti</button>
+    <button id="btnStop" class="danger" hidden>■ Stop</button>
+  </div>
+  <div id="runStatus" class="run-status">Fermo</div>
+  <details id="logBox"><summary>Registro</summary><pre id="log"></pre></details>
+</section>
+
+<section class="table-wrap">
+  <div class="table-head">
+    <b>Versamenti</b>
+    <span id="summary"></span>
+    <select id="filter">
+      <option value="da_pagare" selected>Da pagare</option>
+      <option value="problemi">Errori / da verificare</option>
+      <option value="pagato">Pagati</option>
+      <option value="all">Tutti</option>
+    </select>
+  </div>
+  <table id="tbl">
+    <thead><tr><th>Codice avviso</th><th>Ente</th><th>Importo</th><th>Stato</th><th></th></tr></thead>
+    <tbody></tbody>
+  </table>
+  <p id="empty" class="empty">Nessun versamento in questo elenco.</p>
+</section>
+
+<section class="tools">
+  <button id="btnCsv">Esporta Excel (CSV)</button>
+  <button id="btnCopyAll">Copia tabella</button>
+  <button id="btnClearPaid">Elimina pagati</button>
+  <button id="btnClear" class="danger">Svuota tutto</button>
+</section>
+
+<details>
+  <summary>Incolla testo (da PDF, email, altra pagina)</summary>
+  <textarea id="txtPaste" rows="4" placeholder="Incolla qui il testo con codici avviso o IUV"></textarea>
+  <div class="bank-row">
+    <select id="pasteFonte"><option value="MCTC">Motorizzazione</option><option value="PRA">PRA</option></select>
+    <button id="btnPaste">Estrai dal testo</button>
+  </div>
+</details>
+
+<details>
+  <summary>Impostazioni</summary>
+  <label class="field">Codice CBILL Motorizzazione<input id="setMCTC" placeholder="BFYKB"></label>
+  <label class="field">Codice CBILL PRA<input id="setPRA" placeholder="B041S"></label>
+  <label class="field">Importo da inserire in banca<input id="setImporto" placeholder="1"></label>
+  <button id="btnDiag">Diagnostica pagina (solo struttura, nessun dato)</button>
+  <pre id="diag" hidden></pre>
+</details>
+
+<script src="extractor.js"></script>
+<script src="sidepanel.js"></script>
+</body>
+</html>

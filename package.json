@@ -1,0 +1,14 @@
+{
+  "name": "pratika-browser",
+  "version": "0.1.0",
+  "description": "Browser PRATIKA con estensione IUV PagoPA integrata",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "license": "UNLICENSED",
+  "private": true,
+  "devDependencies": {
+    "electron": "^44.7.2"
+  }
+}

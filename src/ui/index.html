@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 13px system-ui, sans-serif; background: #dfe3e8; user-select: none; overflow: hidden; }
+  #strip { display: flex; height: 36px; align-items: flex-end; padding: 4px 6px 0; gap: 2px; }
+  .tab { display: flex; align-items: center; gap: 6px; width: 200px; height: 32px; padding: 0 8px 0 12px; background: #c9ced6; border-radius: 8px 8px 0 0; cursor: default; }
+  .tab.active { background: #fff; }
+  .tab span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .tab button { border: 0; background: none; border-radius: 50%; width: 18px; height: 18px; cursor: pointer; }
+  .tab button:hover { background: #0002; }
+  #plus { border: 0; background: none; font-size: 18px; width: 30px; height: 30px; cursor: pointer; }
+  #bar { display: flex; height: 48px; align-items: center; gap: 4px; padding: 0 8px; background: #fff; }
+  #bar button { border: 0; background: none; font-size: 16px; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; }
+  #bar button:hover:not(:disabled) { background: #0001; }
+  #bar button:disabled { opacity: .3; }
+  #url { flex: 1; height: 32px; border: 0; border-radius: 16px; background: #eef0f3; padding: 0 14px; font-size: 14px; outline: none; }
+  #url:focus { background: #fff; box-shadow: 0 0 0 2px #1a73e8; }
+  #panel.on { background: #1a73e822; }
+</style>
+</head>
+<body>
+<div id="strip"></div>
+<div id="bar">
+  <button id="back" title="Indietro">←</button>
+  <button id="fwd" title="Avanti">→</button>
+  <button id="reload" title="Ricarica">⟳</button>
+  <input id="url" placeholder="Cerca o digita un indirizzo" spellcheck="false">
+  <button id="panel" title="Mostra/nascondi pannello IUV">▤</button>
+</div>
+<script>
+const $ = id => document.getElementById(id);
+let cur = [];
+api.onTabs(s => {
+  cur = s.tabs;
+  const strip = $('strip');
+  strip.textContent = '';
+  s.tabs.forEach(t => {
+    const d = document.createElement('div');
+    d.className = 'tab' + (t.active ? ' active' : '');
+    const sp = document.createElement('span'); sp.textContent = (t.loading ? '⏳ ' : '') + t.title;
+    const x = document.createElement('button'); x.textContent = '×';
+    x.onclick = e => { e.stopPropagation(); api.send('close-tab', t.id); };
+    d.onclick = () => api.send('activate', t.id);
+    d.append(sp, x);
+    strip.append(d);
+  });
+  const p = document.createElement('button'); p.id = 'plus'; p.textContent = '+'; p.onclick = () => api.send('new-tab');
+  strip.append(p);
+  const a = s.tabs.find(t => t.active);
+  if (a && document.activeElement !== $('url')) $('url').value = a.url;
+  $('back').disabled = !s.canBack; $('fwd').disabled = !s.canFwd;
+  $('panel').className = s.panelOpen ? 'on' : '';
+});
+$('back').onclick = () => api.send('back');
+$('fwd').onclick = () => api.send('forward');
+$('reload').onclick = () => api.send('reload');
+$('panel').onclick = () => api.send('toggle-panel');
+$('url').onkeydown = e => { if (e.key === 'Enter') { api.send('navigate', e.target.value); e.target.blur(); } };
+api.send('ready');
+</script>
+</body>
+</html>
