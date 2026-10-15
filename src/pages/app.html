@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><title>PRATIKA</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'">
+<style>
+:root { --bg:#f4f6fa; --card:#fff; --ink:#1b2430; --mut:#5d6b7a; --line:#e3e8ef; --brand:#1a5fd0; --brand2:#0a2f73; --ok:#188038; --warn:#e8710a; --bad:#d93025; }
+* { box-sizing: border-box; }
+body { margin: 0; font: 14px/1.45 "Segoe UI", system-ui, sans-serif; color: var(--ink); background: var(--bg); }
+#app { padding: 24px 28px 40px; max-width: 1200px; margin: 0 auto; }
+h1 { font-size: 22px; margin: 0 0 4px; letter-spacing: -.3px; } h2 { font-size: 15px; margin: 0 0 10px; } .sub { color: var(--mut); margin: 0 0 18px; }
+.grid { display: grid; gap: 14px; } .g2 { grid-template-columns: 1fr 1fr; } .g3 { grid-template-columns: repeat(3, 1fr); } .g4 { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 980px) { .g3, .g4 { grid-template-columns: 1fr 1fr; } .g2 { grid-template-columns: 1fr; } }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px; }
+.kpi b { display: block; font-size: 30px; line-height: 1.1; margin: 2px 0; } .kpi span { color: var(--mut); font-size: 12.5px; } .kpi.r b { color: var(--bad); } .kpi.o b { color: var(--warn); }
+.ic { width: 24px; height: 24px; border-radius: 6px; display: grid; place-items: center; font: 700 11px system-ui; color: #fff; flex: 0 0 auto; }
+.tile { display: flex; align-items: center; gap: 12px; cursor: pointer; padding: 6px; border-radius: 10px; } .tile:hover { background: #f0f4fa; } .tile .ic { width: 38px; height: 38px; font-size: 14px; border-radius: 10px; } .tile small { color: var(--mut); display: block; }
+button { font-family: inherit; }
+.btn { border: 0; border-radius: 8px; padding: 8px 14px; background: var(--brand); color: #fff; font-weight: 600; font-size: 13px; cursor: pointer; } .btn:hover { filter: brightness(1.08); }
+.btn.s { background: #e9eef6; color: var(--ink); } .btn.ok { background: #e2f3e8; color: var(--ok); } .btn.d { background: #f0f1f4; color: #9aa5b1; cursor: default; filter: none; } .btn.r { background: #fde7e5; color: var(--bad); } .btn.w { width: 100%; }
+.row { display: flex; align-items: center; gap: 12px; } .row.sb { justify-content: space-between; }
+.li { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); } .li:last-child { border: 0; }
+.pill { display: inline-block; font-size: 11.5px; padding: 2px 9px; border-radius: 10px; background: #eef1f6; color: var(--mut); } .pill.r { background: #fde7e5; color: var(--bad); } .pill.o { background: #fdf0dc; color: #8a4a00; } .pill.g { background: #e2f3e8; color: var(--ok); } .pill.b { background: #e3edfc; color: var(--brand); }
+.search { margin-bottom: 14px; } .search input { width: 100%; background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; font: inherit; outline: none; } .search input:focus { border-color: var(--brand); box-shadow: 0 0 0 3px #1a5fd022; }
+.chips { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; } .chip { padding: 6px 14px; background: #fff; border: 1px solid var(--line); border-radius: 16px; font-size: 13px; cursor: pointer; } .chip.on { background: var(--brand2); color: #fff; border-color: var(--brand2); }
+.hero { background: linear-gradient(120deg, #0a2f73, #1a5fd0 70%, #4f9bff); color: #fff; border-radius: 14px; padding: 22px 26px; margin-bottom: 18px; display: flex; justify-content: space-between; align-items: center; gap: 20px; } .hero h2 { color: #fff; font-size: 19px; margin: 0 0 4px; } .hero p { margin: 0; color: #d6e6ff; max-width: 520px; }
+.mod { display: flex; flex-direction: column; gap: 10px; cursor: pointer; } .mod:hover { border-color: #b8c6dc; } .mod .top { display: flex; gap: 12px; } .mod .ic { width: 44px; height: 44px; font-size: 16px; border-radius: 11px; } .mod p { margin: 0; color: var(--mut); font-size: 13px; min-height: 55px; } .mod .ft { display: flex; align-items: center; justify-content: space-between; margin-top: auto; gap: 8px; }
+.sw { width: 40px; height: 22px; border-radius: 11px; background: #c5ceda; position: relative; flex: 0 0 auto; border: 0; cursor: pointer; padding: 0; } .sw::after { content: ""; position: absolute; left: 3px; top: 3px; width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: .15s; } .sw.on { background: var(--ok); } .sw.on::after { left: 21px; }
+table { width: 100%; border-collapse: collapse; } th { text-align: left; font-size: 11.5px; color: var(--mut); padding: 10px 12px; border-bottom: 1px solid var(--line); } td { padding: 12px; border-bottom: 1px solid var(--line); vertical-align: middle; } tr:last-child td { border: 0; }
+.tip { background: #fff8e1; border: 1px solid #f3e0a0; color: #6b5200; border-radius: 10px; padding: 10px 14px; margin-bottom: 16px; font-size: 13px; } .tip.i { background: #eaf2ff; border-color: #c6dbfa; color: #123b78; }
+.back { color: var(--mut); margin-bottom: 10px; cursor: pointer; display: inline-block; } .back:hover { color: var(--brand); }
+.perm { padding-left: 18px; margin: 6px 0 0; } .perm li { margin-bottom: 8px; }
+.toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: #1b2430; color: #fff; padding: 10px 18px; border-radius: 10px; font-size: 13px; display: none; max-width: 80%; z-index: 9; } .toast.err { background: var(--bad); }
+.empty { text-align: center; color: var(--mut); padding: 30px; }
+</style></head><body>
+<div id="app"></div><div class="toast" id="toast"></div>
+<script>
+const $app = document.getElementById('app');
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const ic = (e, sz) => `<span class="ic" style="background:${esc(e.color)};${sz ? `width:${sz}px;height:${sz}px;font-size:${Math.round(sz * .4)}px;border-radius:${Math.round(sz / 4)}px` : ''}">${esc(e.letter)}</span>`;
+const SITES = [
+  { n: 'Portale del Trasporto', s: 'Sistema pagamenti', l: 'PT', c: '#0b5cad', u: 'https://www.ilportaledeltrasporto.it/' },
+  { n: 'PRA – ricerca avvisi', s: 'ACI', l: 'PRA', c: '#5e35b1', u: 'http://esepra3.servizi2.aci/' },
+  { n: 'Sella', s: 'Bollettini, CBILL', l: 'S', c: '#00897b', u: 'https://www.sella.it/' },
+  { n: 'WhatsApp Web', s: 'Messaggi ai clienti', l: 'W', c: '#25a244', u: 'https://web.whatsapp.com/' }
+];
+let query = '', cat = 'Tutti', entries = [], catErr = null, busy = false;
+
+function toast(t, err) { const e = document.getElementById('toast'); e.textContent = t; e.className = 'toast' + (err ? ' err' : ''); e.style.display = 'block'; clearTimeout(toast.t); toast.t = setTimeout(() => (e.style.display = 'none'), 4500); }
+async function act(fn, okMsg) {
+  if (busy) return; busy = true;
+  try { const r = await fn(); if (r && r.ok === false) toast(r.error || 'Operazione non riuscita', true); else if (r && r.cancelled) { /* annullato */ } else if (okMsg) toast(okMsg); }
+  catch (e) { toast(e.message, true); }
+  busy = false; render();
+}
+const route = () => (location.hash.slice(1) || 'home').split('/');
+async function loadCatalog() { const r = await pratika.catalog(); if (r.ok) { entries = r.entries; catErr = r.error; } }
+const byId = id => entries.find(e => e.id === id);
+const fmtBytes = n => (n < 1024 ? n + ' B' : n < 1048576 ? (n / 1024).toFixed(1) + ' KB' : (n / 1048576).toFixed(1) + ' MB').replace('.', ',');
+
+// ---------- HOME ----------
+async function home() {
+  document.title = 'Home';
+  const [h, _] = await Promise.all([pratika.home(), loadCatalog()]);
+  const d = h.data || {};
+  const on = id => { const e = byId(id); return !!(e && e.installed && e.enabled); };
+  const qa = (id, label, icon, btn) => `<div class="li">${icon}<div style="flex:1"><b>${label}</b></div>${on(id) ? `<button class="btn s" data-a="panel" data-id="${id}">${btn}</button>` : `<span class="pill" title="Modulo non attivo: attivalo da Moduli installati">non attivo</span>`}</div>`;
+  const hour = new Date().getHours();
+  const todo = [[true, 'Installa PRATIKA Browser'], [d.clienti > 0, 'Aggiungi il primo cliente', 'panel', 'pratika-fascicolo', 'Vai'], [d.tariffario, 'Compila il tariffario dello studio', 'panel', 'pratika-preventivo', 'Vai'], [d.storeVisited, 'Scopri altri moduli nello Store', 'route', 'store', 'Apri lo Store']];
+  const done = todo.filter(t => t[0]).length;
+  $app.innerHTML = `<h1>${hour < 13 ? 'Buongiorno' : hour < 18 ? 'Buon pomeriggio' : 'Buonasera'} 👋</h1><p class="sub">Ecco cosa richiede attenzione oggi nel tuo ufficio.</p>
+  <div class="grid g4" style="margin-bottom:18px">
+    <div class="card kpi ${d.scadSuperate ? 'r' : ''}"><span>Scadenze superate</span><b>${d.scadSuperate || 0}</b><span>${esc(d.primaSuperata || 'Nessuna')}</span></div>
+    <div class="card kpi ${d.scad15 ? 'o' : ''}"><span>Scadenze entro 15 giorni</span><b>${d.scad15 || 0}</b><span>Da avvisare ai clienti</span></div>
+    <div class="card kpi"><span>Pratiche aperte</span><b>${d.pratAperte || 0}</b><span>${d.pratMancanti ? d.pratMancanti + ' con documenti mancanti' : 'Nessun documento mancante'}</span></div>
+    <div class="card kpi"><span>Pagamenti da fare</span><b>${d.pagDaFare || 0}</b><span>${d.pagDaControllare ? d.pagDaControllare + ' da controllare' : 'Nessuno da controllare'}</span></div></div>
+  <div class="grid g2" style="margin-bottom:18px">
+    <div class="card"><h2>Apri un sito di lavoro</h2><div class="grid g2">${SITES.map(s => `<div class="tile" data-a="url" data-u="${esc(s.u)}"><span class="ic" style="background:${s.c}">${s.l}</span><div><b>${esc(s.n)}</b><small>${esc(s.s)}</small></div></div>`).join('')}</div></div>
+    <div class="card"><h2>Azioni rapide</h2>
+      ${qa('pratika-fascicolo', 'Nuovo cliente o pratica', '<span class="ic" style="background:#1a73e8">F</span>', 'Apri')}
+      ${qa('pratika-preventivo', 'Nuovo preventivo', '<span class="ic" style="background:#188038">P</span>', 'Apri')}
+      ${qa('pratika-iuv', 'Raccogli IUV dalla pagina aperta', '<span class="ic" style="background:#0b5cad;font-size:9px">IUV</span>', 'Apri')}</div></div>
+  <div class="card"><div class="row sb"><h2 style="margin:0">Prime cose da fare</h2><span class="pill b">${done} di ${todo.length}</span></div>
+    ${todo.map((t, i) => `<div class="li"><span class="pill ${t[0] ? 'g' : ''}">${t[0] ? '✓' : i + 1}</span><div style="flex:1">${esc(t[1])}</div>${!t[0] && t[2] ? `<button class="btn ${t[2] === 'route' ? '' : 's'}" data-a="${t[2]}" data-id="${t[3]}">${t[4]}</button>` : ''}</div>`).join('')}</div>`;
+}
+
+// ---------- STORE ----------
+const statusPill = e => e.installed ? (e.enabled ? '<span class="pill g">Installato</span>' : '<span class="pill">Spento</span>') : e.status === 'download' ? '<span class="pill b">Disponibile</span>' : '<span class="pill o">In arrivo</span>';
+function cardBtn(e) {
+  if (e.installed) return e.enabled ? (e.hasPanel ? `<button class="btn s" data-a="panel" data-id="${esc(e.id)}">Apri</button>` : '<span class="pill g">Attivo</span>') : `<button class="btn" data-a="toggle" data-id="${esc(e.id)}" data-on="1">Attiva</button>`;
+  if (e.status === 'download') return `<button class="btn" data-a="install" data-id="${esc(e.id)}">Installa</button>`;
+  return `<button class="btn ${e.interest ? 'ok' : 's'}" data-a="interest" data-id="${esc(e.id)}" data-on="${e.interest ? 0 : 1}">${e.interest ? 'Mi interessa ✓' : 'Mi interessa'}</button>`;
+}
+async function store() {
+  document.title = 'Store dei moduli';
+  pratika.visitedStore();
+  await loadCatalog();
+  const cats = ['Tutti', ...new Set(entries.map(e => e.category)), 'In arrivo'];
+  const q = query.toLowerCase();
+  const list = entries.filter(e => (cat === 'Tutti' || (cat === 'In arrivo' ? e.status === 'soon' : e.category === cat)) && (!q || (e.name + ' ' + e.description + ' ' + e.category).toLowerCase().includes(q)));
+  const feat = entries.find(e => e.featured && !e.installed);
+  const inst = entries.filter(e => e.installed).length;
+  $app.innerHTML = `<div class="row sb"><div><h1>Store dei moduli</h1><p class="sub">Aggiungi funzioni a PRATIKA Browser. Installazione in un clic.</p></div><button class="btn s" data-a="route" data-id="installed">Gestisci installati (${inst})</button></div>
+  ${catErr ? `<div class="tip i">Non riesco a controllare i nuovi moduli online in questo momento: vedi quelli già noti. <button class="btn s" data-a="refresh" style="margin-left:8px;padding:4px 10px">Riprova</button></div>` : ''}
+  <div class="search"><input id="q" placeholder="🔍 Cerca un modulo…" value="${esc(query)}" autocomplete="off"></div>
+  <div class="chips">${cats.map(c => `<span class="chip ${c === cat ? 'on' : ''}" data-a="cat" data-id="${esc(c)}">${esc(c)}</span>`).join('')}</div>
+  ${feat && cat === 'Tutti' && !q ? `<div class="hero"><div><h2>${esc(feat.name)}</h2><p>${esc(feat.long || feat.description)}</p></div><button class="btn" style="background:#fff;color:var(--brand2)" data-a="detail" data-id="${esc(feat.id)}">Scopri di più</button></div>` : ''}
+  <div class="grid g3">${list.map(e => `<div class="card mod" data-a="detail" data-id="${esc(e.id)}"><div class="top">${ic(e)}<div><b>${esc(e.name)}</b><br>${statusPill(e)}</div></div><p>${esc(e.description)}</p><div class="ft"><span class="pill">${e.version ? 'v' + esc(e.version) + ' · ' : ''}${esc(e.price)}</span>${cardBtn(e)}</div></div>`).join('')}
+  <div class="card mod" style="border-style:dashed;align-items:center;justify-content:center;text-align:center;cursor:default"><b>Ti manca qualcosa?</b><p style="min-height:0">Dicci quale passaggio ti fa perdere più tempo.</p><button class="btn s" data-a="url" data-u="https://github.com/nkzbs/browser-pratika/issues/new">Suggerisci un modulo</button></div></div>
+  ${!list.length ? '<div class="empty">Nessun modulo corrisponde alla ricerca.</div>' : ''}`;
+  const qi = document.getElementById('q');
+  qi.oninput = () => { query = qi.value; const pos = qi.selectionStart; store().then(() => { const n = document.getElementById('q'); n.focus(); n.setSelectionRange(pos, pos); }); };
+}
+
+// ---------- DETTAGLIO ----------
+async function detail(id) {
+  await loadCatalog();
+  const e = byId(id);
+  if (!e) { document.title = 'Store'; $app.innerHTML = '<a class="back" data-a="route" data-id="store">← Torna allo Store</a><div class="empty">Modulo non trovato.</div>'; return; }
+  document.title = e.name;
+  const main = e.installed ? (e.enabled ? (e.hasPanel ? `<button class="btn w" data-a="panel" data-id="${esc(e.id)}">Apri il modulo</button>` : '') : '') : e.status === 'download' ? `<button class="btn w" data-a="install" data-id="${esc(e.id)}">Installa</button>` : `<button class="btn w ${e.interest ? 'ok' : 's'}" data-a="interest" data-id="${esc(e.id)}" data-on="${e.interest ? 0 : 1}">${e.interest ? 'Mi interessa ✓ (salvato su questo PC)' : 'Mi interessa'}</button>`;
+  $app.innerHTML = `<a class="back" data-a="route" data-id="store">← Torna allo Store</a>
+  <div class="row" style="align-items:flex-start;gap:24px"><div style="flex:1;min-width:0">
+    <div class="row" style="gap:14px;margin-bottom:12px">${ic(e, 64)}<div><h1 style="margin:0">${esc(e.name)}</h1>${statusPill(e)} ${e.version ? `<span class="pill">v${esc(e.version)}</span>` : ''} <span class="pill">${esc(e.price)}</span></div></div>
+    <p>${esc(e.long || e.description)}</p>
+    ${e.hasUpdate ? `<div class="tip">È disponibile la versione ${esc(e.latest)}. <button class="btn" style="margin-left:8px;padding:5px 12px" data-a="install" data-id="${esc(e.id)}">Aggiorna</button></div>` : ''}
+    ${e.status === 'soon' ? '<div class="tip i">Questo modulo non è ancora pronto. "Mi interessa" lo segna solo su questo computer: non viene inviato a nessuno.</div>' : ''}
+  </div><div style="width:340px;flex:0 0 auto" class="card">
+    ${main}
+    ${e.installed ? `<div class="row sb" style="margin:14px 0"><span>Attivo</span><button class="sw ${e.enabled ? 'on' : ''}" data-a="toggle" data-id="${esc(e.id)}" data-on="${e.enabled ? 0 : 1}" aria-label="Attiva o spegni"></button></div>` : ''}
+    ${e.installed ? `<h2 style="margin-top:14px">Cosa può fare questo modulo</h2><ul class="perm">${e.perms.map(p => `<li>${esc(p)}</li>`).join('') || '<li>Nessun permesso particolare</li>'}</ul>
+      <div class="tip" style="margin:14px 0 0">Sono i permessi che il modulo dichiara. Installa solo moduli di cui ti fidi.</div>
+      <div class="li" style="margin-top:10px"><span style="flex:1;color:var(--mut)">Dati salvati</span>${fmtBytes(e.dataBytes)}</div>
+      <div class="li"><span style="flex:1;color:var(--mut)">Origine</span>${e.source === 'bundled' ? 'Incluso nel programma' : 'Installato dallo Store'}</div>
+      ${e.source === 'user' ? `<button class="btn r w" style="margin-top:12px" data-a="uninstall" data-id="${esc(e.id)}">Disinstalla (i dati restano)</button>` : '<div style="color:var(--mut);font-size:12.5px;margin-top:10px">Questo modulo è parte del programma: puoi spegnerlo ma non rimuoverlo.</div>'}` : ''}
+  </div></div>`;
+}
+
+// ---------- INSTALLATI ----------
+async function installed() {
+  document.title = 'Moduli installati';
+  await loadCatalog();
+  const list = entries.filter(e => e.installed);
+  const upd = list.filter(e => e.hasUpdate);
+  $app.innerHTML = `<div class="row sb"><div><h1>Moduli installati</h1><p class="sub">Attiva, aggiorna o rimuovi i moduli. Un modulo spento non usa risorse.</p></div>
+    <div class="row"><button class="btn s" data-a="zip">Installa da file…</button><button class="btn" data-a="route" data-id="store">+ Aggiungi dallo Store</button></div></div>
+  ${upd.map(e => `<div class="tip">⬆ Aggiornamento disponibile: <b>${esc(e.name)} ${esc(e.version)} → ${esc(e.latest)}</b> <button class="btn" style="margin-left:10px;padding:5px 12px" data-a="install" data-id="${esc(e.id)}">Aggiorna ora</button></div>`).join('')}
+  <div class="card" style="padding:0;overflow:hidden"><table><tr><th>Modulo</th><th>Versione</th><th>Stato</th><th>Permessi</th><th style="text-align:right">Attivo</th></tr>
+  ${list.map(e => `<tr><td><div class="row" style="cursor:pointer" data-a="detail" data-id="${esc(e.id)}">${ic(e, 28)}<b>${esc(e.name)}</b></div></td><td>${esc(e.version || '')}</td><td>${e.enabled ? '<span class="pill g">In funzione</span>' : '<span class="pill">Spento</span>'}</td>
+    <td><a style="color:var(--brand);cursor:pointer" data-a="detail" data-id="${esc(e.id)}">${e.perms.length} permessi</a></td>
+    <td style="text-align:right"><button class="sw ${e.enabled ? 'on' : ''}" data-a="toggle" data-id="${esc(e.id)}" data-on="${e.enabled ? 0 : 1}" aria-label="Attiva o spegni"></button></td></tr>`).join('')}</table></div>`;
+}
+
+async function render() {
+  const [r, id] = route();
+  try {
+    if (r === 'store') await (id ? detail(id) : store());
+    else if (r === 'installed') await installed();
+    else await home();
+  } catch (e) { $app.innerHTML = `<div class="empty">Errore: ${esc(e.message)}</div>`; }
+}
+
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-a]');
+  if (!t) return;
+  e.stopPropagation();
+  const id = t.dataset.id, a = t.dataset.a;
+  if (a === 'panel') act(() => pratika.openPanel(id));
+  else if (a === 'url') act(() => pratika.openUrl(t.dataset.u));
+  else if (a === 'route') { location.hash = id; }
+  else if (a === 'detail') { location.hash = 'store/' + id; }
+  else if (a === 'cat') { cat = id; render(); }
+  else if (a === 'toggle') act(() => pratika.toggle(id, t.dataset.on === '1'));
+  else if (a === 'install') act(() => pratika.install(id), 'Modulo installato');
+  else if (a === 'uninstall') { if (confirm('Disinstallare il modulo? I suoi dati restano sul computer.')) act(() => pratika.uninstall(id), 'Modulo disinstallato'); }
+  else if (a === 'interest') act(() => pratika.interest(id, t.dataset.on === '1'));
+  else if (a === 'zip') act(() => pratika.installZip(), 'Modulo installato');
+  else if (a === 'refresh') act(() => pratika.refresh());
+});
+window.addEventListener('hashchange', render);
+pratika.onChanged(() => { if (!busy && document.activeElement && document.activeElement.id !== 'q') render(); });
+render();
+</script></body></html>

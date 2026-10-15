@@ -1,0 +1,127 @@
+{
+  "version": 1,
+  "modules": [
+    {
+      "id": "pratika-iuv",
+      "name": "Pagamenti PagoPA",
+      "letter": "IUV",
+      "color": "#0b5cad",
+      "category": "Pagamenti",
+      "status": "bundled",
+      "price": "Incluso",
+      "description": "Raccolta degli avvisi da Portale e PRA, tabella esportabile, pagamento in sequenza in banca.",
+      "long": "Legge IUV e codici avviso dal Portale del Trasporto e dal PRA, li prepara per il pagamento CBILL e li paga in sequenza dall'home banking Sella. Gli avvisi già pagati sul portale vengono riconosciuti."
+    },
+    {
+      "id": "autofranciacorta",
+      "name": "WhatsApp",
+      "letter": "W",
+      "color": "#25a244",
+      "category": "Comunicazione",
+      "status": "bundled",
+      "price": "Incluso",
+      "description": "Rubrica, messaggi predefiniti e invio da WhatsApp Web; usato anche dagli altri moduli.",
+      "long": "Scrivi un numero, scegli il messaggio e parte l'invio da WhatsApp Web. Gli altri moduli lo usano per avvisare i clienti. Esito sull'icona: spunta se inviato, punto esclamativo se no."
+    },
+    {
+      "id": "pratika-fascicolo",
+      "name": "Clienti e pratiche",
+      "letter": "F",
+      "color": "#1a73e8",
+      "category": "Clienti e pratiche",
+      "status": "bundled",
+      "price": "Incluso",
+      "description": "Anagrafica clienti, pratiche con stato e avviso al cliente con un tocco.",
+      "long": "Un'anagrafica dei clienti con telefono e targhe e le loro pratiche con lo stato di avanzamento. Con un tocco si avvisa il cliente via WhatsApp con il messaggio adatto allo stato."
+    },
+    {
+      "id": "pratika-scadenzario",
+      "name": "Scadenze",
+      "letter": "S",
+      "color": "#e8710a",
+      "category": "Clienti e pratiche",
+      "status": "bundled",
+      "price": "Incluso",
+      "description": "Bollo, revisione, assicurazione. Promemoria WhatsApp ai clienti.",
+      "long": "Tieni sotto controllo bollo, revisione, assicurazione e tagliando dei tuoi clienti. Il numero sull'icona dice quante scadenze sono superate o entro 15 giorni, e con un tocco parte il promemoria WhatsApp."
+    },
+    {
+      "id": "pratika-preventivo",
+      "name": "Preventivi",
+      "letter": "P",
+      "color": "#188038",
+      "category": "Clienti e pratiche",
+      "status": "bundled",
+      "price": "Incluso",
+      "description": "Tariffario dello studio e preventivi pronti da inviare.",
+      "long": "Si sceglie cliente, pratica e targa, poi le voci dal tariffario dello studio. Totale calcolato, testo pronto da copiare o inviare, e creazione della pratica nel Fascicolo."
+    },
+    {
+      "id": "pratika-registro",
+      "name": "Registro pagamenti",
+      "letter": "R",
+      "color": "#7b1fa2",
+      "category": "Contabilità",
+      "status": "bundled",
+      "price": "Incluso",
+      "description": "Pagamenti per cliente, esportazione per il commercialista.",
+      "long": "I pagamenti raccolti dal modulo IUV, assegnati ai clienti e filtrabili per mese. Esportazione per il commercialista e ricevuta al cliente."
+    },
+    {
+      "id": "targa-visure",
+      "name": "Controllo targa e visure",
+      "letter": "T",
+      "color": "#00838f",
+      "category": "Clienti e pratiche",
+      "status": "soon",
+      "price": "Modulo aggiuntivo",
+      "description": "Dati veicolo e intestatario dal portale, salvati nel fascicolo.",
+      "long": "Dalla targa recupera i dati del veicolo dal portale e li salva nel fascicolo del cliente.",
+      "featured": true
+    },
+    {
+      "id": "compilazione-guidata",
+      "name": "Compilazione guidata",
+      "letter": "C",
+      "color": "#3949ab",
+      "category": "Clienti e pratiche",
+      "status": "soon",
+      "price": "Modulo aggiuntivo",
+      "description": "Riporta i dati del fascicolo nelle maschere dei portali.",
+      "long": "Compila al posto tuo i campi delle maschere dei portali con i dati già presenti nel fascicolo del cliente."
+    },
+    {
+      "id": "lettura-documenti",
+      "name": "Lettura documenti",
+      "letter": "D",
+      "color": "#6d4c41",
+      "category": "Documenti",
+      "status": "soon",
+      "price": "Modulo aggiuntivo",
+      "description": "Legge libretto e documenti d'identità e precompila i campi.",
+      "long": "Legge libretto, carta d'identità e patente e precompila i campi del fascicolo."
+    },
+    {
+      "id": "fatturazione",
+      "name": "Fatturazione",
+      "letter": "€",
+      "color": "#455a64",
+      "category": "Contabilità",
+      "status": "soon",
+      "price": "Modulo aggiuntivo",
+      "description": "Prepara le fatture dalle pratiche chiuse.",
+      "long": "Prepara le fatture dalle pratiche chiuse e le esporta verso il programma di fatturazione dello studio."
+    },
+    {
+      "id": "sepa",
+      "name": "SEPA",
+      "letter": "SEPA",
+      "color": "#c62828",
+      "category": "Pagamenti",
+      "status": "soon",
+      "price": "Modulo aggiuntivo",
+      "description": "Bonifici e addebiti SEPA dall'home banking.",
+      "long": "Bonifici e addebiti SEPA dall'home banking."
+    }
+  ]
+}

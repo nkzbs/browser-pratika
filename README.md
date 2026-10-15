@@ -13,6 +13,10 @@ Applicazione desktop (Windows): un browser a **moduli**. Ogni modulo è un'esten
 
 Elenco completo, API di piattaforma (`chrome.pratika`) e moduli ancora da realizzare: [`docs/MODULI.md`](docs/MODULI.md).
 
+## Novità della 0.2
+- **Nuova interfaccia:** barra laterale con i moduli (nome esteso e badge), pagina **Home** con ciò che richiede attenzione oggi.
+- **Store dei moduli:** catalogo, installazione, attivazione/spegnimento e disinstallazione dei moduli. Dettagli in [`docs/STORE.md`](docs/STORE.md).
+
 ## Uso (utenti)
 1. Scarica l'installer `.exe` dalla pagina [Releases](../../releases) (o l'artefatto dell'ultima build in *Actions*).
 2. Installa (un clic, senza diritti di amministratore) e avvia **PRATIKA Browser**: un solo file contiene il browser e tutti i moduli. A destra c'è il pannello IUV (pulsante ▤ per mostrarlo/nasconderlo).
@@ -44,7 +48,10 @@ Electron non supporta `chrome.sidePanel` e solo in parte le API delle estensioni
 | `src/shim-preload.js` | Costruisce il `window.chrome` di ciascun modulo (`storage` local/sync/session, `runtime`, `tabs`, `scripting`, `notifications`, `alarms`, `action`…) |
 | `src/bg-host.html` | Finestra nascosta in cui gira il `background.js` di ogni modulo |
 | `src/store.js` | Equivalente di `chrome.storage` su file JSON in `%APPDATA%/…/storage/<modulo>-<area>.json` |
-| `src/ui/` | Barra delle schede, indirizzi e pulsanti dei moduli (con badge) |
+| `src/ui/` | Barra laterale (`side.html`) e barra delle schede/indirizzi (`index.html`) |
+| `src/pages/` | Pagine interne: Home, Store, Moduli installati (`app.html`) |
+| `src/store-manager.js` | Catalogo, permessi in chiaro, installazione sicura da archivio .zip |
+| `src/catalog.json` · `catalog/catalog.json` | Catalogo incluso e catalogo online (stesso formato) |
 | `modules/*/` | I moduli, con il codice originale delle estensioni, non modificato |
 
 Ogni modulo ha la propria memoria, i propri messaggi e il proprio background: i moduli non si vedono tra loro.

@@ -1,49 +1,38 @@
 <!doctype html>
-<html lang="it">
-<head>
-<meta charset="utf-8">
+<html lang="it"><head><meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'">
 <style>
-  * { box-sizing: border-box; }
-  body { margin: 0; font: 13px system-ui, sans-serif; background: #dfe3e8; user-select: none; overflow: hidden; }
-  #strip { display: flex; height: 36px; align-items: flex-end; padding: 4px 6px 0; gap: 2px; }
-  .tab { display: flex; align-items: center; gap: 6px; width: 200px; height: 32px; padding: 0 8px 0 12px; background: #c9ced6; border-radius: 8px 8px 0 0; cursor: default; }
-  .tab.active { background: #fff; }
-  .tab span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .tab button { border: 0; background: none; border-radius: 50%; width: 18px; height: 18px; cursor: pointer; }
-  .tab button:hover { background: #0002; }
-  #plus { border: 0; background: none; font-size: 18px; width: 30px; height: 30px; cursor: pointer; }
-  #bar { display: flex; height: 48px; align-items: center; gap: 4px; padding: 0 8px; background: #fff; }
-  #bar button { border: 0; background: none; font-size: 16px; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; }
-  #bar button:hover:not(:disabled) { background: #0001; }
-  #bar button:disabled { opacity: .3; }
-  #url { flex: 1; height: 32px; border: 0; border-radius: 16px; background: #eef0f3; padding: 0 14px; font-size: 14px; outline: none; }
-  #url:focus { background: #fff; box-shadow: 0 0 0 2px #1a73e8; }
-  #modules { display: flex; gap: 2px; }
-  .mod { position: relative; }
-  .mod img { width: 22px; height: 22px; vertical-align: middle; }
-  .mod.on { background: #1a73e833 !important; }
-  .mod b { position: absolute; top: 0; right: 0; min-width: 15px; height: 15px; border-radius: 8px; color: #fff; font: 700 10px/15px system-ui; padding: 0 3px; }
-</style>
-</head>
-<body>
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body { font: 13px "Segoe UI", system-ui, sans-serif; background: #d3dae5; user-select: none; overflow: hidden; }
+#strip { display: flex; height: 40px; align-items: flex-end; padding: 8px 10px 0; gap: 3px; }
+.tab { display: flex; align-items: center; gap: 6px; width: 200px; height: 32px; padding: 0 6px 0 14px; background: #bcc6d4; border-radius: 8px 8px 0 0; cursor: default; min-width: 0; }
+.tab.active { background: #fff; font-weight: 600; }
+.tab span { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tab button { border: 0; background: none; border-radius: 50%; width: 20px; height: 20px; cursor: pointer; color: inherit; }
+.tab button:hover { background: #0002; }
+#plus { border: 0; background: none; font-size: 18px; width: 30px; height: 30px; cursor: pointer; border-radius: 50%; }
+#plus:hover { background: #0001; }
+#bar { display: flex; height: 44px; align-items: center; gap: 6px; padding: 0 12px; background: #fff; border-bottom: 1px solid #e3e8ef; }
+#bar button { border: 0; background: #eef1f6; font-size: 15px; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; color: #5d6b7a; }
+#bar button:hover:not(:disabled) { background: #dfe5ee; } #bar button:disabled { opacity: .35; }
+#url { flex: 1; height: 32px; border: 0; border-radius: 16px; background: #eef1f6; padding: 0 16px; font: 13px inherit; font-family: inherit; outline: none; color: #1b2430; }
+#url:focus { background: #fff; box-shadow: 0 0 0 2px #1a5fd0; }
+</style></head><body>
 <div id="strip"></div>
 <div id="bar">
-  <button id="back" title="Indietro">←</button>
-  <button id="fwd" title="Avanti">→</button>
-  <button id="reload" title="Ricarica">⟳</button>
+  <button id="back" title="Indietro">←</button><button id="fwd" title="Avanti">→</button><button id="reload" title="Ricarica">⟳</button>
   <input id="url" placeholder="Cerca o digita un indirizzo" spellcheck="false">
-  <div id="modules"></div>
 </div>
 <script>
 const $ = id => document.getElementById(id);
-let cur = [];
 api.onTabs(s => {
-  cur = s.tabs;
   const strip = $('strip');
   strip.textContent = '';
   s.tabs.forEach(t => {
     const d = document.createElement('div');
     d.className = 'tab' + (t.active ? ' active' : '');
+    d.title = t.title;
     const sp = document.createElement('span'); sp.textContent = (t.loading ? '⏳ ' : '') + t.title;
     const x = document.createElement('button'); x.textContent = '×';
     x.onclick = e => { e.stopPropagation(); api.send('close-tab', t.id); };
@@ -56,17 +45,6 @@ api.onTabs(s => {
   const a = s.tabs.find(t => t.active);
   if (a && document.activeElement !== $('url')) $('url').value = a.url;
   $('back').disabled = !s.canBack; $('fwd').disabled = !s.canFwd;
-  const box = $('modules');
-  box.textContent = '';
-  (s.modules || []).forEach(m => {
-    const b = document.createElement('button');
-    b.className = 'mod' + (m.active ? ' on' : '');
-    b.title = m.name;
-    if (m.icon) { const i = document.createElement('img'); i.src = m.icon; b.append(i); } else b.textContent = m.name[0];
-    if (m.badge && m.badge.text) { const g = document.createElement('b'); g.textContent = m.badge.text; g.style.background = m.badge.color; b.append(g); }
-    b.onclick = () => api.send('module', m.id);
-    box.append(b);
-  });
 });
 $('back').onclick = () => api.send('back');
 $('fwd').onclick = () => api.send('forward');
@@ -74,6 +52,4 @@ $('reload').onclick = () => api.send('reload');
 $('url').onkeydown = e => { if (e.key === 'Enter') { api.send('navigate', e.target.value); e.target.blur(); } };
 api.onFocusUrl(() => { $('url').focus(); $('url').select(); });
 api.send('ready');
-</script>
-</body>
-</html>
+</script></body></html>
